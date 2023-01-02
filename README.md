@@ -1,5 +1,5 @@
 # bookshop project backend
-Deployed using railway - https://web-production-3d39.up.railway.app/
+Deployed using Render - https://react-bookshop-backend.onrender.com/
 
 Tehnologies used:
 - Node.js
