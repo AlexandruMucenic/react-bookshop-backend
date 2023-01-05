@@ -1,7 +1,7 @@
 # bookshop project backend
 Deployed using Render - https://react-bookshop-backend.onrender.com/
 
-Tehnologies used:
+Technologies used:
 - Node.js
 - Express.js
 - Mongoose
