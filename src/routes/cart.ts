@@ -1,32 +1,29 @@
-import express from "express";
-import CartProduct from "../models/cartProduct.js";
+import express, { Request, Response } from 'express';
+import CartProduct from '../models/cartProduct';
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const cartProducts = await CartProduct.find();
     res.send(cartProducts);
-
-  } catch (error) {
-    res.status(500).send("Error: " + error.message);
+  } catch (error: any) {
+    res.status(500).send('Error: ' + error.message);
   }
 });
 
-router.delete("/:id/delete", async (req, res) => {
+router.delete('/:id/delete', async (req: Request, res: Response) => {
   try {
     await CartProduct.deleteOne({ id: req.params.id });
 
     const cartProducts = await CartProduct.find();
     res.send(cartProducts);
-
-  } catch (error) {
-    res.status(404);
-    res.send({ error: "Product doesn't exist!" });
+  } catch (error: any) {
+    res.status(404).send({ error: "Product doesn't exist!" });
   }
 });
 
-router.put("/:id/add", async (req, res) => {
+router.put('/:id/add', async (req: Request, res: Response) => {
   try {
     const { id, author, title, imageURL, price, quantity } = req.body;
     const product = await CartProduct.findOne({ id: req.params.id });
@@ -39,7 +36,7 @@ router.put("/:id/add", async (req, res) => {
         title: title,
         price: price,
         imageURL: imageURL,
-        quantity: quantity
+        quantity: quantity,
       });
 
       await cartProduct.save();
@@ -47,49 +44,43 @@ router.put("/:id/add", async (req, res) => {
     }
 
     await product.updateOne({
-      $inc: { quantity: quantity }
+      $inc: { quantity: quantity },
     });
 
     const cartProducts = await CartProduct.find();
     res.send(cartProducts);
-
-  } catch (error) {
-    res.status(404);
-    res.send({ error: "Product doesn't exist!" });
+  } catch (error: any) {
+    res.status(404).send({ error: "Product doesn't exist!" });
   }
 });
 
-router.put("/:id/increaseQuantity", async (req, res) => {
+router.put('/:id/increaseQuantity', async (req: Request, res: Response) => {
   try {
     const product = await CartProduct.findOne({ id: req.params.id });
 
-    await product.updateOne({
-      $inc: { quantity: 1 }
+    await product?.updateOne({
+      $inc: { quantity: 1 },
     });
 
     const updatedProducts = await CartProduct.find();
     res.send(updatedProducts);
-
-  } catch (error) {
-    res.status(404);
-    res.send({ error: "Product doesn't exist!" });
+  } catch (error: any) {
+    res.status(404).send({ error: "Product doesn't exist!" });
   }
 });
 
-router.put("/:id/decreaseQuantity", async (req, res) => {
+router.put('/:id/decreaseQuantity', async (req: Request, res: Response) => {
   try {
     const product = await CartProduct.findOne({ id: req.params.id });
 
-    await product.updateOne({
-      $inc: { quantity: -1 }
+    await product?.updateOne({
+      $inc: { quantity: -1 },
     });
 
     const updatedProducts = await CartProduct.find();
     res.send(updatedProducts);
-
-  } catch (error) {
-    res.status(404);
-    res.send({ error: "Product doesn't exist!" });
+  } catch (error: any) {
+    res.status(404).send({ error: "Product doesn't exist!" });
   }
 });
 
